@@ -1,2 +1,2 @@
-# upanishad01
-Isha, Kena, Katha, Prashna, Mundaka TTS
+# prasthanatrayi
+Parayana of prasthanatraya bhashya using hear2read Sanskrit TTS engine
