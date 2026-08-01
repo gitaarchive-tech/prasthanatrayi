@@ -33,6 +33,10 @@
 <body>
     <div id="mySidebar" class="sidebar">
         <div class="sidebar-header">ग्रन्थसूची (Table of Contents)</div>
+        <div id="toc-links"></div>
+        <div style="padding: 20px; margin-top: 20px; border-top: 1px solid #e2d1b3; font-size: 0.9rem; color: #8b5a2b; white-space: normal; line-height: 1.4;">
+            Audio rendered using the <a href="https://hear2read.org/" target="_blank" style="display: inline; padding: 0; border: none; font-size: 0.9rem; text-decoration: underline;">Hear2Read Sanskrit TTS Engine</a>. We thank them for their contribution!
+        </div>
     </div>
     <div id="myOverlay" class="sidebar-overlay" onclick="toggleNav()"></div>
     <div class="header-container">
@@ -47,7 +51,7 @@
     <div id="content"></div>
     <div class="player-container">
         <div class="speed-control">
-            <label for="speed-slider">Playback Speed: <span id="speed-display">1.0</span>x</label>
+            <label for="speed-slider">(Click any segment to start playing) Playback Speed: <span id="speed-display">1.0</span>x</label>
             <input type="range" id="speed-slider" min="-50" max="50" step="1" value="0" style="vertical-align: middle;">
         </div>
         <audio id="audio-player" controls></audio>
@@ -113,7 +117,7 @@
                         toggleNav();
                         playAudio(index);
                     };
-                    sidebar.appendChild(link);
+                    document.getElementById('toc-links').appendChild(link);
                 });
             }
         });
