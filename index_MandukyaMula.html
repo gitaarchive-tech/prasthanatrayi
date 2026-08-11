@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Listen to the Sanskrit audio of माण्डूक्योपनिषत्. Rendered with VAGDHENU TTS. Part of प्रस्थानत्रयमूलम् on Gita Archive.">
+    <meta property="og:title" content="माण्डूक्योपनिषत् - प्रस्थानत्रयमूलम्">
+    <meta property="og:description" content="High-quality Sanskrit audiobook for माण्डूक्योपनिषत् generated using VAGDHENU.">
+    <meta property="og:type" content="website">
     <title>माण्डूक्योपनिषत् - प्रस्थानत्रयमूलम् (VAGDHENU)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@indic-transliteration/sanscript@1.2.8/sanscript.min.js"></script>
     <style>
         body {
             font-family: 'Siddhanta', 'Sanskrit 2003', 'Noto Serif Devanagari', serif, Arial;
@@ -27,6 +32,9 @@
         .speed-control { font-size: 1rem; font-weight: bold; margin-bottom: 0px; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
         #play-pause-btn { padding: 8px 20px; font-weight: bold; cursor: pointer; border: 1px solid #8b5a2b; background-color: #8b5a2b; color: white; border-radius: 4px; font-size: 1rem; }
         #play-pause-btn:hover { background-color: #724722; }
+        #script-select { padding: 5px; font-size: 1rem; border-radius: 4px; border: 1px solid #ccc; }
+        .footer-link { display: block; text-align: center; margin-top: 15px; padding-bottom: 15px; font-size: 0.9rem; color: #8b5a2b; text-decoration: none; font-weight: bold; }
+        .footer-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -39,12 +47,25 @@
     <div class="player-container">
         <div style="font-size: 0.95rem; font-weight: bold; color: #5a3d2b; margin-bottom: 12px; text-align: center;">(Click any segment to begin rendering)</div>
         <div class="speed-control" style="display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
-            <label for="speed-slider" style="display: flex; align-items: center; gap: 5px; margin: 0;">
-                Playback Speed: <span id="speed-display" style="display: inline-block; width: 35px; text-align: center;">1.0x</span>
+            <label for="script-select" style="font-size:0.9rem; margin:0;">Script:</label>
+            <select id="script-select">
+                <option value="devanagari">Devanagari</option>
+                <option value="kannada">Kannada</option>
+                <option value="telugu">Telugu</option>
+                <option value="malayalam">Malayalam</option>
+                <option value="bengali">Bengali</option>
+                <option value="tamil">Tamil</option>
+                <option value="gujarati">Gujarati</option>
+                <option value="oriya">Odia</option>
+            </select>
+            
+            <label for="speed-slider" style="display: flex; align-items: center; gap: 5px; margin: 0; margin-left: 15px;">
+                Speed: <span id="speed-display" style="display: inline-block; width: 35px; text-align: center;">1.0x</span>
             </label>
             <input type="range" id="speed-slider" min="0.5" max="2.0" step="0.1" value="1.0" style="vertical-align: middle; margin: 0;">
             <button id="play-pause-btn">Start Reading</button>
         </div>
+        <a href="https://gitaarchive-tech.github.io/advaita/about.html" class="footer-link">परिचयः कृतज्ञता च (About & Acknowledgements)</a>
     </div>
 
     <script>
@@ -69,6 +90,20 @@
             speedDisplay.innerText = parseFloat(this.value).toFixed(1);
         };
         
+        let currentScript = 'devanagari';
+        const scriptSelect = document.getElementById('script-select');
+        scriptSelect.onchange = function() {
+            currentScript = this.value;
+            document.querySelectorAll('.sentence-text').forEach((span, index) => {
+                let origText = manifest[index].originalText;
+                if (currentScript === 'devanagari') {
+                    span.innerText = origText;
+                } else {
+                    span.innerText = Sanscript.t(origText, 'devanagari', currentScript);
+                }
+            });
+        };
+        
         const playPauseBtn = document.getElementById('play-pause-btn');
         playPauseBtn.onclick = () => {
             if (isPlaying) {
@@ -91,6 +126,7 @@
             idSpan.innerText = '[' + item.id + ']';
             
             const textSpan = document.createElement('span');
+            textSpan.className = 'sentence-text';
             textSpan.innerText = item.originalText;
             
             div.appendChild(idSpan);
